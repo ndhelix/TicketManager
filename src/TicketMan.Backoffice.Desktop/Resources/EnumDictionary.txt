@@ -1,0 +1,21 @@
+OrderStatus	Pending	На рассмотрении
+OrderStatus	Confirmed	Подтверждена
+OrderStatus	Coordinated	Согласована
+OrderStatus	Idle	В ожидании
+OrderStatus	Dispatched	Обработана
+OrderStatus	Issued	Выписана
+OrderStatus	Cancelled	Отменена
+OrderStatus	Faulted	Ошибочная
+OrderStatus	Voided	Аннулирована
+OrderStatus	VoidPending	Ожидает аннуляции
+OrderStatus	Archived	Архивная
+OrderStatus	Outdated	Устаревшая
+OrderStatus	SystemError	Системная ошибка
+PayerLegalStatus	LegalParty	Юридическое лицо
+PayerLegalStatus	NaturalParty	Физическое лицо
+PassportType	National	Общегражданский
+PassportType	International	Заграничный
+UserType	Customer	Физическое лицо
+UserType	OrganizationMember	Сотрудник агентства
+PaymentType	Cash	Наличные
+PaymentType	CreditCard	Пластиковая карта
