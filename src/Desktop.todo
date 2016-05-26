@@ -1,0 +1,108 @@
+получить конкретный сайт
+? редактировать собственный сайт
+Пользователи агентств: добавить фильтр по логину/организации
+notify about users with the same login in subagencies, change them to be a Сотрудник
+UpdateRecordCount after filter appies on the grid
+timeout error when requesting too many orders 
+copy-paste to excel from tab
+± “Create” commands in main menu
+возвращать ошибки на русском языке (платежи)
+check tab indices
+create payment from Payments tab
+show related organizations on Order
+Было бы хорошо уметь копировать контракты. Вернее создавать новый на основе имеющегося.
+“Подождите” splash -> TicketMan animation
+error when selecting many org in order filter
+проставить для выписанных
+± Показывать юрлиц вместе со сделками.
+± all headers in Russian
+± Округление цены до второго знака везде.
+TeamCity
+± auto-update
+consider XElement2List to allow for node names
+show more informative wait-splash screen
+editable comment on frmOrder	
+eliminate build warnings in DesktopInstaller
+± remember login and password (dialog box)
+
+± обработка ошибок
+duplicate reports menu in main menu
+report designer should not ask about saving if template was saved on server
+± adjust TabIndex everywhere
+± (force refresh available) After report template has been created, it should be stored to Persistence
+± dlgSaveReportTemplate : handle multiple types
+replace CreateInInvoice etc with CreateReport
+
+? should treeBuyers be a tree?
+? combobox on type on dlgSaveReportTemplate
+? create BankAccount edit component
+? status checkedcombobox can not be deselected-all
+? examine double-click on grid
+Шаблоны отчетов должны всплывать при нажатии на кнопку их вызывающую (?)
+? filter/search on Buyer
+? Лицензионное соглашение
+multilanguage - year 2013
+
+-------------------------------- --------------------------------
+
+Resharper
+комментарии
+названия классов и форм — с большой буквы
+кнопку шаблоны отчетов перенести в меню
+компонент выбора интервала — скрывать или обновлять даты (нижнюю часть)
+редактирование шаблона отчета 
+меню на форме шаблонов отчетов
+readonly поля должны иметь индикатор
+возможность редактирования формулы как текста
+Form frmReportTemplates : refresh button (menu item)
+save Contract	
+"Save changes" confirmation on close
+frmPaymentReports: create popup menu
+frmOrder grids: make readonly
+Disable menu utems for contract creation if these types of contracts already exist
+handle that conctact can not have duplicate on ContractType and ServiceType
+Formula creation
+http://stackoverflow.com/questions/1667764/what-common-routines-do-you-put-in-your-program-cs-for-c-sharp
+F5 — refresh (on forms)	
+send errors by mail (репозитарий / Common / Messengers)
+ServiceType as combobox
+program closes if password is incorrect
+статус по-русски
+создание формулы для нового контракта
+создание более одной формулы для контракта
+Код банковского счета -> номер банковского счета
+учитывать толщину границы окна
+на форме контракта названия организаций вместо идентификаторов
+outinvoice — расходная накладная в меню отчетов
+appeared Не отображаются значения в детализации цены.
+edit Essentials bank accounts (create new etc)
+Refresh as button
+поиск по номеру заявки
+минимальные размеры окон
+Кнопка обновить при изменении фильтров на вкладке заявок
+about box with version
+multiple SiteSlug/APIkey
+search order by number
+eliminate hanging splash-screen
+отчет комиссионера (по организации) по умолчанию за последний месяц
+unify the language System.Threading.Thread.CurrentThread.CurrentCulture = new 
+Tune col widths in formulas grid
+Поиск в оплатах по OrderUniqueNumber
+add Users tab
+implemented in DevExpress + search org by code/name
+
+возможность сохранения пароля (опционально)
+внести функцию импорта заявки
+поиск орг-ции на форме ред-ния польз-ля
+when creating first contract for new org, error is shown that the same-type contract already exists
+Импорт заявки, Cancel button — should close the form
+выводить количество записей на вкладках
+user table: merge columns «Код орг.» and «Тип» into one
+manage users for subagencies
+user: while empty the phonenumber, it really is not removed
+user: add ability to issue orders
+create sites
+add users for other sites
+create user: set password etc
+change user email
+форма оплаты: должно быть два поля: PaymentAmount и ReceivedAmount
