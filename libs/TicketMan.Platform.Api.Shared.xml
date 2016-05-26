@@ -1,0 +1,2968 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TicketMan.Platform.Api.Shared</name>
+    </assembly>
+    <members>
+        <member name="T:TicketMan.Platform.Api.Shared.ReportsRestClient">
+            <summary>
+            Клиент для работы с очтетами
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.RestServiceClientBase">
+            <summary>
+            Абстрактный базовый класс для REST-клиентов.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.RestServiceClientBase.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="siteSlug"></param>
+            <param name="apiKey"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.GetReportTypes">
+            <summary>
+            Получение всех доступных типов отчета
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.GetReportTemplatesInfo">
+            <summary>
+            Получение всех доступных шаблонов отчета
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.GetReportTemplate(System.String,System.String)">
+            <summary>
+            Возвращает все шаблоны отчетов, которые удовлетворяют указанным параметрам.
+            </summary>
+            <param name="reportType">Тип отчета</param>
+            <param name="reportTemplateCode">Код шаблона</param>
+            <returns>Шаблон отчета</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.SaveReportTemplate(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportTemplate)">
+            <summary>
+            Загружает новый шаблон в базу данных. Если данный шаблон уже есть, старый заменяется переданным.
+            </summary>
+            <param name="reportTemplate">Описание шаблона</param>
+            <returns>Операция успешно выполнена</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.CreateReport(System.String,System.String,TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportFormat,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Общая функция генерации отчета
+            </summary>
+            <param name="reportType">Тип отчета</param>
+            <param name="reportTemplateCode">Код шаблона отчета (не обязательно)</param>
+            <param name="reportFormat">Тип файла отчета</param>
+            <param name="parameters">Параметры</param>
+            <returns>Файл отчета</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.CreateInInvoice(System.String,System.String,TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportFormat)">
+            <summary>
+            Создает приходную накладную (счет на оплату)
+            </summary>
+            <param name="orderUniqueNumber">Номер заявки, по которой сгенерировать счет</param>
+            <param name="reportTemplateCode">Шаблон счета (null, стандартный)</param>
+            <param name="reportFormat">Формат генерируемого файла</param>
+            <returns>Файл отчета</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.CreateOutInvoice(System.String,System.String,TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportFormat)">
+            <summary>
+            Создает расходную накладную (счет для покупателя)
+            </summary>
+            <param name="orderUniqueNumber">Номер заявки, по которой сгенерировать счет</param>
+            <param name="reportTemplateCode">Шаблон счета (null, стандартный)</param>
+            <param name="reportFormat">Формат генерируемого файла</param>
+            <returns>Файл отчета</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReportsRestClient.CreateAgentReport(TicketMan.Platform.Api.Shared.Protocol.Requests.AgencyReportRequest,System.String,TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportFormat)">
+            <summary>
+            Создает отчет комиссионера
+            </summary>
+            <param name="agencyReportRequest">Параметры отчета</param>
+            <param name="reportTemplateCode">Шаблон счета (null, стандартный)</param>
+            <param name="reportFormat">Формат генерируемого файла</param>
+            <returns>Файл отчета</returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentInfo">
+            <summary>
+            Представляет данные для оплаты заявки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentInfo.UniqueNumber">
+            <summary>
+            Уникальный код заявки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentInfo.OrderPaymentPrices">
+            <summary>
+            Список цен для заявок при оплате через различные системы оплаты
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentInfo.AlreadyPaid">
+            <summary>
+            Уже оплаченная конечным пользователем по данной заявке сумма
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentInfo.Payer">
+            <summary>
+            Информация о плательщике
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentInfo.Description">
+            <summary>
+            Текстовое описание заявки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.PaymentReportsRequest.CreatedOnFrom">
+            <summary>
+            Нижняя граница времени создания заявки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.PaymentReportsRequest.CreatedOnTo">
+            <summary>
+            Верхняя граница времени создания заявки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.PaymentReportsRequest.PageNumber">
+            <summary>
+            Номер страницы
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.PaymentReportsRequest.PageSize">
+            <summary>
+            Количество заявко на страницу
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.PaymentReportsRequest.PaymentSystemCodes">
+            <summary>
+            Коды платежных щлюзов, по которым выозвращаеть платежыи
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.GetBuyers(TicketMan.Platform.Protocol.ObjectModel.Contracts.ContractType)">
+            <summary>
+            Возвращает все организации-покупателей для текущей
+            </summary>
+            <param name="contractType">Тип контракта</param>
+            <returns>Список организаций</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.GetBuyers(TicketMan.Platform.Protocol.ObjectModel.Contracts.ContractType,System.String)">
+            <summary>
+            Возвращает все организации-покупателей для текущей
+            </summary>
+            <param name="contractType">Тип контракта</param>
+            <param name="code">Код компании для которой нужно вернуть покупателей</param>
+            <returns>Список организаций</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.GetSellers(TicketMan.Platform.Protocol.ObjectModel.Contracts.ContractType)">
+            <summary>
+            Возвращает все организации-продавцы для текущей
+            </summary>
+            <param name="contractType">Тип контракта</param>
+            <returns>Список организаций</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.GetSellers(TicketMan.Platform.Protocol.ObjectModel.Contracts.ContractType,System.String)">
+            <summary>
+            Возвращает все организации-продавцы для текущей
+            </summary>
+            <param name="contractType">Тип контракта</param>
+            <param name="code">Код компании для которой нужно вернуть поставщиков</param>
+            <returns>Список организаций</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.GetChildOrganizations">
+            <summary>
+            Возвращает все подразделения данной организации
+            </summary>
+            <returns>Список организаций</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.GetChildOrganizations(System.String)">
+            <summary>
+            Возвращает все подразделения указанной организации
+            </summary>
+            <param name="code">Код организации для которой нужно получить дочерние</param>
+            <returns>Список организаций</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.GetOrganization(System.String)">
+            <summary>
+            Возвращает организацию по ее коду
+            </summary>
+            <returns>Организация</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.CreateOrganization(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Organization,System.Collections.Generic.List{TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract})">
+            <summary>
+            Создает новую организацию в системе
+            </summary>
+            <param name="organization">Данные органищации</param>
+            <param name="сontracts">Контракты между создаваемой организацией и текущей (обязательно задать хотябы один)</param>
+            <returns>Новый объект организации</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrganizationRestClient.UpdateOrganization(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Organization)">
+            <summary>
+            Обновление организации
+            </summary>
+            <param name="organization">Данные органищации</param>
+            <returns>Новый объект организации</returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Exceptions.AuthorizationApiException">
+            <summary>
+            Ошибка авторизации
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Exceptions.ApiException">
+            <summary>
+            Общий тип исключений генерируемый сервером
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Exceptions.AuthorizationApiException.Permission">
+            <summary>
+            Разрешение, отсутствие которого вызвало ошибку авторизации
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ServiceType.Code">
+            <summary>
+            Код типа услуги
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ServiceType.Name">
+            <summary>
+            Название услуги
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ServiceType.Description">
+            <summary>
+            Описание услуги
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.ContragentInfo.PartyId">
+            <summary>
+            идентификатор контрагента. (ссылка на PartyId)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.ContragentInfo.BankAccountCode">
+            <summary>
+            код счета в банке данного контрагента
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.SerucrityToken.DateTimeFormat">
+            <summary>
+            Формат даты
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.SerucrityToken.CodeTypeName">
+            <summary>
+            Навзание параметра, определяющее тип кодирования секретной строки
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.SerucrityToken.ByteFormatName">
+            <summary>
+            Навзание параметра, определяющее формат представления байтов
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.SerucrityToken.StringEncoding">
+            <summary>
+            Кодировка для строк
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.SerucrityToken.CodeType">
+            <summary>
+            Тип кодирования секретной строки
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SerucrityToken.GetCode(TicketMan.Platform.Api.Shared.SerucrityToken.ByteFormatEnum,TicketMan.Platform.Api.Shared.SerucrityToken.CodeTypeEnum,System.String,System.String)">
+            <summary>
+            Возвращает закодированную строку
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SerucrityToken.GetHmac(TicketMan.Platform.Api.Shared.SerucrityToken.ByteFormatEnum,System.String,System.String)">
+            <summary>
+            Считает Hmac
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SerucrityToken.GetMd5(TicketMan.Platform.Api.Shared.SerucrityToken.ByteFormatEnum,System.String)">
+            <summary>
+            Считает Md5
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.SerucrityToken.ByteFormat">
+            <summary>
+            Тип кодирования секретной строки
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SerucrityToken.GetBytesAsString(TicketMan.Platform.Api.Shared.SerucrityToken.ByteFormatEnum,System.Byte[])">
+            <summary>
+            Возвращает закодированную строку
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.SerucrityToken.ExpiresAt">
+            <summary>
+            Дата исиечения автризационных данных
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.SerucrityToken.ExpiresAtString">
+            <summary>
+            Форматированное значение даты истечения 
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.SerucrityToken.Nonce">
+            <summary>
+            Случайная последовательность симоволов
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ImpersonationToken.ValidateByPasswordHash(System.Byte[],System.String)">
+            <summary>
+            Проверка полученного от клиента ImpersonationToken
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ImpersonationToken.ValidateByPasswordHash(System.String,System.String)">
+            <summary>
+            Проверка полученного от клиента ImpersonationToken
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.ImpersonationToken.IsExternalIdAuthorization">
+            <summary>
+            Аутентификация по ExternalId
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.FlightTravelClass">
+            <summary>
+            Перечисление, определяющее класс места.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.FlightTravelClass.Any">
+            <summary>
+            Любой класс.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.FlightTravelClass.First">
+            <summary>
+            Первый класс.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.FlightTravelClass.Business">
+            <summary>
+            Бизнес-класс.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.FlightTravelClass.Economy">
+            <summary>
+            Эконом-класс.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorReferenceElementExtension">
+            <summary>
+            Представляет расширение для указания оригинального идентификатора вендора для элемента справочных данных.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorReferenceElementExtension.VendorID">
+            <summary>
+            Идентификатор вендора.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorReferenceElementExtension.OriginalID">
+            <summary>
+            Оригинальный идентификатор элемента справочнных данных.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest">
+            <summary>
+            Запрос на поиск туров
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.Validate">
+            <summary>
+            Валидирует параметры поиска
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.#ctor">
+            <summary>
+            Создает новый экземпляр объекта SearchRequest.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.VendorIDs">
+            <summary>
+            Идентификаторы вендоров(туроператоров), у которых искать туры
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.VendorUniformCode">
+            <summary>
+            Уникальные названия вендоров
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.DepartureCityID">
+            <summary>
+            Идентификатор города отправления
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.DestinationCountryID">
+            <summary>
+            Идентификатор страны назначения
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.DepartureDate">
+            <summary>
+            Дата отправления
+            </summary>
+            <remarks>
+            Указывается ЛИБО одна только <paramref name="DepartureDate"/>, ЛИБО две: <paramref name="DepartureDateFrom"/> И <paramref name="DepartureDateTo"/>
+            </remarks>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.DepartureDateFrom">
+            <summary>
+            Начальная из диапазона возможных дат отправления
+            </summary>
+            Указывается ЛИБО одна только <paramref name="DepartureDate"/>, ЛИБО две: <paramref name="DepartureDateFrom"/> И <paramref name="DepartureDateTo"/>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.DepartureDateTo">
+            <summary>
+            Конечная из диапазона возможных дат отправления
+            </summary>
+            Указывается ЛИБО одна только <paramref name="DepartureDate"/>, ЛИБО две: <paramref name="DepartureDateFrom"/> И <paramref name="DepartureDateTo"/>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.Nights">
+            <summary>
+            Продолжительность тура в ночах
+            </summary>
+            Указывается ЛИБО только <paramref name="Nights"/>, ЛИБО <paramref name="NightsFrom"/> И <paramref name="NightsTo"/>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.NightsFrom">
+            <summary>
+            Продолжительность тура в ночах "ОТ"
+            </summary>
+            Указывается ЛИБО только <paramref name="Nights"/>, ЛИБО <paramref name="NightsFrom"/> И <paramref name="NightsTo"/>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.NightsTo">
+            <summary>
+            Продолжительность тура в ночах "ДО"
+            </summary>
+            Указывается ЛИБО только <paramref name="Nights"/>, ЛИБО <paramref name="NightsFrom"/> И <paramref name="NightsTo"/>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.Adults">
+            <summary>
+            Число взрослых
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.Children">
+            <summary>
+            Число детей
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.ChildrenAge">
+            <summary>
+            Список возрастов детей, число элементов списка должно соответствовать числу детей <paramref name="Children"/>
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.ResortID">
+            <summary>
+            Список идентификаторов курорта (региона/города/деревни), где находится отель
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.RatingID">
+            <summary>
+            Список идентификаторов категорий отеля
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.HotelID">
+            <summary>
+            Список идентификаторов отелей
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.VendorHotelID">
+            <summary>
+            Список идентификаторов отелей в терминах вендора 
+            </summary>
+            <remarks>
+            Задается в формате {vendorUniformCode}-{hotelID} 
+            Например, для вендора с UniformCode = Troyka и его отеля с оригинальным ID = 456 идентификатор будет таким: Troyka-456
+            </remarks>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.BoardID">
+            <summary>
+            Список типов питания
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.CurrencyID">
+            <summary>
+            Идентификатор валюты, в которой будут цены найденных туров
+            <remarks>
+            NULL -- цены туров в валюте туроператора
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.CurrencyCode">
+            <summary>
+            Код валюты из перечисления <seealso cref="T:TicketMan.Platform.Protocol.ObjectModel.IsoCurrencyCode"/>
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.MinPrice">
+            <summary>
+            Минимальная стоитмость тура. Задается в указанной валюте <paramref name="Currency"/>
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.MaxPrice">
+            <summary>
+            Максимальная стоимость тура. Задается в указанной валюте <paramref name="Currency"/>
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.AvailableFlightServices">
+            <summary>
+            Искать туры, для которых есть авиабилеты *туда* и *обратно*
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.AvailableFlightServiceThere">
+            <summary>
+            Искать туры, для которых есть билеты "туда"
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.AvailableFlightServiceBack">
+            <summary>
+            Искать туры, для которых есть билеты "обратно"
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.WithoutFlightService">
+            <summary>
+            Искать туры только с наземным обслуживанием, то есть без включенного в стоимость перелета
+            TODO: Выкинуть. Параметр ни одним коннектором реально не используется.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.AvailableHotelService">
+            <summary>
+            Искать туры с доступной услугой проживания в отеле
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.SpoID">
+            <summary>
+            Идентификатор спецпредложения, в пределах которого искать туры
+            </summary>
+            <remarks>
+            Используется только при поиске туров одного, конкретного вендора
+            </remarks>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.Sort">
+            <summary>
+            Тип сортировки результатов
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.InterfaceName">
+            <summary>
+            Возвращает или устанавливает идентификаторы интерфейсов поисковых сервисов
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.Timeout">
+            <summary>
+            Возвращает или устанавливает таймаут поиска.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchRequest.ReservationAllowed">
+            <summary>
+            Определяет, искать ли туры только доступные для бронирования.
+            То есть с доступными (или по запросу) услугами перелета и проживания.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.ContentTypes.TicketManTourMLv30Xml">
+            <summary>
+            MIME-тип для TicketMan TourML XML 3.0
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.ContentTypes.TicketManPlatformv10Xml">
+            <summary>
+            MIME-тип для TicketMan Platform XML 1.0
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Support.Wcf.MessageVersionConverter">
+            <summary>
+            This code is a copy of System.ServiceModel.Configuration.MessageVersionConverter.
+            That class is internal so it needs to be duplicated here.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Role.Code">
+            <summary>
+            Код роли
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Role.Name">
+            <summary>
+            Навание
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Role.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Role.Permissions">
+            <summary>
+            Все разрешения данной роли
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.UserRestClient">
+            <summary>
+            Клиент для работы с профайлами пользователей
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.UserRestClient.GetCurrentUser">
+            <summary>
+            Возврощает описание текущего пользователя
+            </summary>
+            <returns>Профиль текущего пользовталя</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.UserRestClient.GetUsers(System.String)">
+            <summary>
+            Возвращает список пользователей заданного сайта
+            </summary>
+            <param name="siteSlug">Идентификатор сайта для которого требуется загрузить пользователей</param>
+            <returns>Список пользователей</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.UserRestClient.GetUser(System.String,System.String)">
+            <summary>
+            Получение конкретного пользователя
+            </summary>
+            <param name="siteSlug">Идентификатор сайта</param>
+            <param name="login">Логин (email) пользователя</param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.UserRestClient.CreateUser(TicketMan.Platform.Api.Shared.Protocol.Requests.CreateUserRequest)">
+            <summary>
+            Создание пользователя
+            </summary>
+            <param name="createUserRequest">Данные необходимые для создания пользователя</param>
+            <return>Созданный пользователь</return>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.UserRestClient.UpdateUser(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User)">
+            <summary>
+            Модификация пользователя
+            </summary>
+            <param name="user">Данные пользователя</param>
+            <return>Измененный пользователь</return>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.UserRestClient.RequestChangingPassword(System.String,System.String,System.Nullable{System.DateTime}@)">
+            <summary>
+            Запрос смены пароля. Вызывается перед <see cref="M:TicketMan.Platform.Api.Shared.UserRestClient.ChangePassword(System.String,System.Guid,System.String)"/>
+            Функция генерирует секретный ключ востановления пароля и высылает его на адресс пользовтаеля
+            </summary>
+            <param name="emailAddress">Логин пользователя</param>
+            <param name="confirmationUrl">Шаблон ссылки перехода для смены пароля. Должен содержать строку "{recoveryToken}", куда будет подставлено значение секретного ключа.</param>
+            <param name="recoveryTokenExpiresAt">При успешной операции — время истечения действия ключа востановления пароля.</param>
+            <returns>True - в случае успеха операции.</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.UserRestClient.ChangePassword(System.String,System.Guid,System.String)">
+            <summary>
+            Смена пароля пользователя. Перед вызовом нудно запросить <see cref="M:TicketMan.Platform.Api.Shared.UserRestClient.RequestChangingPassword(System.String,System.String,System.Nullable{System.DateTime}@)"/>
+            </summary>
+            <param name="emailAddress">Логин пользователя</param>
+            <param name="recoveryToken">Секретный ключ смены пароля</param>
+            <param name="password">Новый пароль</param>
+            <returns>True - в случае успеха операции.</returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ContractFormula">
+            <summary>
+            Формула расчета задолжности в котракте
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ContractFormula.Number">
+            <summary>
+            Порядковый номер формулы в контракте
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ContractFormula.Description">
+            <summary>
+            Описание формулы
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ContractFormula.PriceRowTypeCode">
+            <summary>
+            Тип строки в формуле
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ContractFormula.Formula">
+            <summary>
+            Формула
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.BookingCalculatePackageExtension.CatPacketId">
+            <summary>
+            Возвращает или устанавливает название спецпредложения оператора.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.BookingCalculatePackageExtension.ARecNo">
+            <summary>
+            Возвращает или устанавливает название спецпредложения оператора.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.BookingCalculatePackageExtension.HtVariantId">
+            <summary>
+            Возвращает или устанавливает название спецпредложения оператора.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.DealExt">
+            <summary>
+            Класс для предварительной обработки сделки для 1С
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.DealExt.ContractType">
+            <summary>
+            тип контракта, по которому создалась сделка. Допустимые значения (Sales, AttractClient, MoneyTransfer)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.DealExt.Seller">
+            <summary>
+            контрагент продавца
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.DealExt.Buyer">
+            <summary>
+            контрагент покупателя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.DealExt.CurrencyCode">
+            <summary>
+            валюта сделки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.DealExt.ServiceType">
+            <summary>
+            тип услуги (пока есть: flights, hotels, tours). Для сделок с ContractType=MoneyTransfer, тип услуги всегда unknown.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.DealExt.PriceRows">
+            <summary>
+             детализация суммы сделки. Сумма сделки считается как сумма полей PriceRow.Value.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.IBookingService">
+            <summary>
+            Контракт сервиса бронирования туров.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IBookingService.UpdateReservation(TicketMan.Platform.Protocol.ObjectModel.TourMLDocument)">
+            <summary>
+            Обновляет туристический пакет
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IBookingService.CreateBooking(TicketMan.Platform.Protocol.ObjectModel.TourMLDocument)">
+            <summary>
+            Создает заявку
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IBookingService.GetOrder(TicketMan.Platform.Protocol.ObjectModel.TourMLDocument)">
+            <summary>
+            Получение заявки
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IBookingService.UpdateOrderStatus(TicketMan.Platform.Protocol.ObjectModel.TourMLDocument,TicketMan.Platform.Protocol.ObjectModel.Orders.OrderStatus)">
+            <summary>
+            Обновляет статус заявки
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IBookingService.GetOrderDocument(TicketMan.Platform.Protocol.ObjectModel.TourMLDocument)">
+            <summary>
+            Возвращает документ заявки с уникальным номером <param name="uniqueNumber"/>
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IBookingService.ConvertReservationToOrder(TicketMan.Platform.Protocol.ObjectModel.TourMLDocument)">
+            <summary>
+            Конвертирует ReservationsPayloadTourMLDocument в OrdersPayloadTourMLDocument
+            </summary>
+            <param name="reservationTourMLDocument"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IBookingService.GetVendorCancellationPolicy(System.Int64)">
+            <summary>
+            Возвращает правила отмены заявки у вендора.
+            </summary>
+            <param name="vendorID"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.StandardPermissions">
+            <summary>
+            Стандартные разрешения.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.StandardPermissions.Reports">
+            <summary>
+            Разрешения, относящиеся к отчетам.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.StandardPermissions.Reports.GenerateReportsInvoice">
+            <summary>
+            Разрешение на генерацию счетов.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.StandardPermissions.Reports.GenerateReportsTicket">
+            <summary>
+            Разрешение на генерацию билетов.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.StandardPermissions.Reports.GenerateReportsCumulative">
+            <summary>
+            Разрешение на генерацию сводных отчетов.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OrganizationInfo.Code">
+            <summary>
+            Код организации. Уникальный идендификатор.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OrganizationInfo.ParentOrganizationCode">
+            <summary>
+            Код родительской организации. Может не иметь значения.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OrganizationInfo.ShortName">
+            <summary>
+            Короткое название органиазции
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OrganizationInfo.FullName">
+            <summary>
+            Полное название организации
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OrganizationInfo.PartyId">
+            <summary>
+            Идентификатор контрагента
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ReferencesRestClient.GetServiceTypes">
+            <summary>
+            Возвращает все типы услуг на сервере.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Serialization.IObjectSerializer">
+            <summary>
+            Интерфейс настраиваемого сереализатора
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Serialization.MvcSerializer">
+            <summary>
+            Сериализатор объекта в строку запроса в стиле MVC Framework
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Serialization.MvcSerializer.ParamBuilder">
+            <summary>
+            Строит список параметров по именам
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcSerializer.ParamBuilder.#ctor(System.Object,System.Type,System.String,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Постройка дерева
+            </summary>
+            <param name="obj">Корневой объект для построения дерева</param>
+            <param name="type">Тип объекта</param>
+            <param name="prefix">Корневой префикс</param>
+            <param name="simpleTypes">Типы, разбор членов которых не требуется</param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcSerializer.ParamBuilder.BuildParameters(System.String,System.Object,System.Type)">
+            <summary>
+            Построение списка параметров
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Serialization.MvcSerializer.ParamBuilder.SimpleTypes">
+            <summary>
+            Список типов не требующих сериализации
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Serialization.MvcSerializer.FunctionSerializer">
+            <summary>
+            Функциональный сериалайзер
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.FlightsReferencesRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.FlightsReferencesRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.FlightsReferencesRestClient.#ctor(System.String)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.ToursReferencesRestClient"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SiteRestClient.GetCurrentSite">
+            <summary>
+             Возвращает сайт авторизованный в этом запросе
+            </summary>
+            <returns>Текущий сайт</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SiteRestClient.GetSites(System.String)">
+            <summary>
+             Возвращает список сайтов для организации
+            </summary>
+            <param name="organizationCode">Код организации</param>
+            <returns>Список сайтов</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SiteRestClient.GetSite(System.String)">
+            <summary>
+            Возвращает описание сайта по его идентификатору
+            </summary>
+            <param name="siteSlug">Идентификатор сайта</param>
+            <returns>Сайт</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SiteRestClient.CreateSite(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site)">
+            <summary>
+            Создает сайт
+            </summary>
+            <param name="site">Информация о создаваемом сайте</param>
+            <returns>Перобразованная информация о сохраненном сайте</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SiteRestClient.UpdateSite(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site)">
+            <summary>
+            Обновляет данные сайта
+            </summary>
+            <param name="site">Данные сайта</param>
+            <returns>Перобразованная информация о сохраненном сайте</returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.OneCRestClient">
+            <summary>
+            Клиент для 1С
+            </summary>
+            
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OneCRestClient.#ctor(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+            <param name="siteSlug"></param>
+            <param name="apiKey"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OneCRestClient.GetAccountingData(System.Nullable{System.DateTime})">
+            <summary>
+            Возвращает данные по заявкам для 1С.
+            </summary>
+            <param name="changedFromDate">Время изменения заявки, не ранее</param>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersDocumentsRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.OrdersRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersDocumentsRestClient.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersDocumentsRestClient.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="siteSlug"></param>
+            <param name="apiKey"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersDocumentsRestClient.#ctor(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+            <param name="siteSlug"></param>
+            <param name="apiKey"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersDocumentsRestClient.GetOrderDocument(System.String,System.String)">
+            <summary>
+            Возвращает краткую выжемку из заявок доступных имперсонированному пользователю.
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+            <param name="code">Номер документа</param>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials">
+            <summary>
+            Реквизиты юридического лица
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.LegalName">
+            <summary>
+            Юридическое название (для документов)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.Inn">
+            <summary>
+            ИНН
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.Kpp">
+            <summary>
+            КПП
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.Ogrn">
+            <summary>
+            ОГРН
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.LegalAddress">
+            <summary>
+            Юридический адресс
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.Address">
+            <summary>
+            Фактический адресс
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.DefaultBankAccount">
+            <summary>
+            Номер счета в банке используемый по умлочанию.
+            
+            В каждом контракте номер счета может быть переопределен.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.DefaultBankAccountCode">
+            <summary>
+            Код номера счета в банке используемый по умлочанию.
+            
+            В каждом контракте номер счета может быть переопределен.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Essentials.BankAccounts">
+            <summary>
+            Список всех счетов данной организации
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.BankAccount">
+            <summary>
+            Описание банковского счета организации 
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.BankAccount.Code">
+            <summary>
+            Системный код данного банковского счета, который используется для внешних ссылок.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.BankAccount.BankName">
+            <summary>
+            Название банка
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.BankAccount.BankAddress">
+            <summary>
+            Адрес банка
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.BankAccount.Bik">
+            <summary>
+            БИК
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.BankAccount.AccountNumber">
+            <summary>
+            Номер расчетного счета
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.BankAccount.CorrespondingAccountNumber">
+            <summary>
+            Номер корресподентского счета
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentPrice">
+            <summary>
+            Цена заявки для оплаты
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentPrice.PaymentSystemCode">
+            <summary>
+            Код организации осуществляющей прием денег (платежной системы)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.OrderPaymentPrice.Price">
+            <summary>
+            Цена заявки при оплате через указанную платежную систему
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelSearchRequest.CheckInDate">
+            <summary>
+            Дата заезда
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelSearchRequest.CheckOutDate">
+            <summary>
+            Дата выезда
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelSearchRequest.CityCode">
+            <summary>
+            Код города
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelSearchRequest.CountryCode">
+            <summary>
+            Код страны
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelSearchRequest.Rooms">
+            <summary>
+            Список требуемых комнат
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.ImportOrderRequest.VendorUniqueNumber">
+            <summary>
+            Номер заявки в системе оператора
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.ImportOrderRequest.Owner">
+            <summary>
+            Описание владельца заявки 
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.ImportOrderRequest.User.Login">
+            <summary>
+            Логин (email) пользователя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.ImportOrderRequest.User.SiteSlug">
+            <summary>
+            Код сайта пользовтаеля
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.AgencyReportRequest.ServiceType">
+            <summary>
+            Тип услуги, по которому генерируется отчет
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.AgencyReportRequest.OrganizationCode">
+            <summary>
+            Код организации-субагента
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.AgencyReportRequest.BeginDate">
+            <summary>
+            Начало отчетного периода
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.AgencyReportRequest.EndDate">
+            <summary>
+            Конец отчетного периода
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Contragent.PartyId">
+            <summary>
+            идентификатор контрагента
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Contragent.FullName">
+            <summary>
+            полное название контрагента
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Contragent.Essentials">
+            <summary>
+            реквизиты контрагента
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Contragent.Type">
+            <summary>
+            тип контрагента
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.ISearchService">
+            <summary>
+            Контракт сервиса посика туров.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportTemplate">
+            <summary>
+            Шаблон отчета
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportTemplateInfo">
+            <summary>
+            Информация о шаблоне отчета для передачи в списках
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportTemplateInfo.Code">
+            <summary>
+            Идентификатор шаблона
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportTemplateInfo.Name">
+            <summary>
+            Пользовательское название шаблона
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportTemplateInfo.TypeCodes">
+            <summary>
+            Коды типа шаблона (см. <see cref="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportType"/>)
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ToursReferencesRestClient.#ctor(System.String)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.ToursReferencesRestClient"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ToursReferencesRestClient.GetDepartureCountries">
+            <summary>
+            Возвращает TourML-документ со списком всех стран отправления.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ToursReferencesRestClient.GetDepartureCities(System.Nullable{System.Int64})">
+            <summary>
+            Возвращает TourML-документ со списком городов отправления.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment">
+            <summary>
+            Представляет платеж по заявке с уникальным номером <see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.OrderUniqueNumber"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.#ctor(System.String,System.Int64,System.Decimal)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment"/>.
+            </summary>
+            <param name="orderNumber"></param>
+            <param name="currencyID"></param>
+            <param name="amount"></param>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.OrderUniqueNumber">
+            <summary>
+            Возвращает или устанавливает номер заявки, которая оплачивается
+            текущим платежом.
+            </summary>
+            <remarks>
+            См. <see cref="P:TicketMan.Platform.Protocol.ObjectModel.Orders.Order.UniqueNumber"/>.
+            </remarks>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.PayerPartyID">
+            <summary>
+            Возвращает или устанавливает идентификатор контрагента-плательщика.
+            </summary>
+            <remarks>
+            Если значение <see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.PayerPartyID"/> равно <c>null</c>, за плательщика принимается покупатель заявки.
+            </remarks>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.PaymentSystemID">
+            <summary>
+            Возвращает или устанавливает идентификатор платежной системы,
+            через который был проведен данный платеж.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.BeneficiaryPartyID">
+            <summary>
+            Возвращает или устанавливает идентификатор контрагента-получателя платежа.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.PaymentSystemUniformCode">
+            <summary>
+            Возвращает или устанавливает код платежной системы.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.UniqueNumber">
+            <summary>
+            Возвращает или устанавливает уникальный нормер платежа в пределах TicketMan Platform.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.PaymentSystemUniqueNumber">
+            <summary>
+            Возвращает или устанавливает уникальный номер платежа в пределах
+            системы платежной системы.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.Type">
+            <summary>
+            Возвращает или устанавливает тип платежа.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.PayerLegalStatus">
+            <summary>
+            Возвращает или устанавливает юридический статус плательщика.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.CurrencyID">
+            <summary>
+            Возвращает или устанавливает идентификатор валюты, в которой производится платеж.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.Amount">
+            <summary>
+            Возвращает или устанавливает сумму платежа в валюте <see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.CurrencyID"/>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.Comment">
+            <summary>
+            Возвращает или устанавливает комментарий к платежу.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.CreatedAt">
+            <summary>
+            Возвращает или устанавливает дату создания платежа.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment.Payer">
+            <summary>
+            Возвращает или устанавливает информацию о плательщике.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsReferencesRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.HotelsReferencesRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsReferencesRestClient.#ctor(System.String)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.ToursReferencesRestClient"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsReferencesRestClient.GetCities(TicketMan.Platform.Api.Shared.Protocol.Requests.ReferencesLanguage)">
+            <summary>
+            Получение списка городов
+            </summary>
+            <param name="language">Язык перевода</param>
+            <returns>Справочники городов стран</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsReferencesRestClient.GetHotelInfo(TicketMan.Platform.Api.Shared.Protocol.Requests.HotelsInfoRequest)">
+            <summary>
+            Получение информации об отеле
+            </summary>
+            <returns>Справочник отеля</returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Deal">
+            <summary>
+            Сделка для 1С
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Deal.ContractType">
+            <summary>
+            тип контракта, по которому создалась сделка. Допустимые значения (Sales, AttractClient, MoneyTransfer)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Deal.Seller">
+            <summary>
+            контрагент продавца
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Deal.Buyer">
+            <summary>
+            контрагент покупателя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Deal.CurrencyCode">
+            <summary>
+            валюта сделки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Deal.ServiceType">
+            <summary>
+            тип услуги (пока есть: flights, hotels, tours). Для сделок с ContractType=MoneyTransfer, тип услуги всегда unknown.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Deal.PriceRows">
+            <summary>
+             детализация суммы сделки. Сумма сделки считается как сумма полей PriceRow.Value.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.XTicketManHeaders">
+            <summary>
+            Определение имен http-заголовков 
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.XTicketManHeaders.SiteAuthenticateHeader">
+            <summary>
+            Заголовок в котором передается ApiKey сайта
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.XTicketManHeaders.UserAuthenticateHeader">
+            <summary>
+            Заголовок в котором передается ImpersonationToken пользователя
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ConnectorInfo">
+            <summary>
+            Информация о подключенном коннекторе
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ConnectorInfo.ServiceTypeCode">
+            <summary>
+            Код типа услуги
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ConnectorInfo.AssemblyName">
+            <summary>
+            Имя сборки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ConnectorInfo.Version">
+            <summary>
+            Версия сборки
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.AccountingData">
+            <summary>
+            Содержит заявки и организации для передачи в 1С
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.ContragentExt">
+            <summary>
+            Класс аналогичен классу Contragent, но содержит OrganizationId.
+            OrganizationId не нужен в XML, но нужен для промежуточной обработки.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.ContragentExt.OrganizationId">
+            <summary>
+            Id организации в базе
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.IReferencesService">
+            <summary>
+            Контракт сервиса посика туров.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetDepartureCountries">
+            <summary>
+            Возвращает страны отправления
+            </summary>
+            <returns>Заполняет справочник стран отправления в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetDepartureCities(System.Nullable{System.Int64})">
+            <summary>
+            Возвращает города отправления
+            </summary>
+            <param name="departureCountryId">Идентификатор страны отправления (может быть null)</param>
+            <returns>Заполняет справочник городов отправления в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetDestinationCountries">
+            <summary>
+            Возвращает страны назначения по городу отправления
+            </summary>
+            <returns>Заполняет справочник стран назначения в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetDestinationResorts(System.Nullable{System.Int64})">
+            <summary>
+            Возвращает курорты по стране
+            </summary>
+            <param name="countryId">Идентификатор страны</param>
+            <returns>Заполняет справочник курортов в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetVendors">
+            <summary>
+            Возвращает вендоров по городу отправления и стране назначения
+            </summary>
+            <returns>Заполняет справочник вендоров в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetIncomingHotelsByVendor(System.String,System.String,System.Nullable{System.Int64},System.Collections.Generic.IList{System.Int64})">
+            <summary>
+            Возвращает справочник отелеей указанного вендора
+            </summary>
+            <param name="vendorName"></param>
+            <param name="interfaceName"></param>
+            <param name="countryID"></param>
+            <param name="cityIDs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetRatings">
+            <summary>
+            Возвращает категории отелей
+            </summary>
+            <returns>Заполняет справочник категорий отелей в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetBoards">
+            <summary>
+            Возвращает типы питания
+            </summary>
+            <returns>Заполняет справочник типов питания в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetHotels(System.Nullable{System.Int64},System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.Int64})">
+            <summary>
+            Возвращает отели по стране, курорту и категории отеля
+            </summary>
+            <param name="countryId">Идентификатор страны</param>
+            <param name="resortIds">Список идентификаторов курорта (может быть null)</param>
+            <param name="hotelCategoryIds">Список идентификаторов категории отеля (может быть null)</param>
+            <returns>Заполняет справочник отелей в TourML</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.IReferencesService.GetCurrencies">
+            <summary>
+            Возвращает валюты
+            </summary>
+            <returns>Заполняет справочник отелей в TourML</returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.ContractsRestClient">
+            <summary>
+            Клиент к <c>{siteSlug}/contracts</c>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ContractsRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.ContractsRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ContractsRestClient.GetContracts(System.String)">
+            <summary>
+            Возвращает контракты между текущей организацией и заданной
+            </summary>
+            <param name="organizationCode">Код организации</param>
+            <returns>Список контрактов</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ContractsRestClient.GetContract(System.String)">
+            <summary>
+            Возвращает контракты между текущей организацией и заданной
+            </summary>
+            <param name="uniqueNumber">Уникальный код контракта</param>
+            <returns>Конракт</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ContractsRestClient.CreateContract(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract)">
+            <summary>
+            Создает контракт
+            </summary>
+            <param name="contract">Данные контракта</param>
+            <returns>Конракт</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ContractsRestClient.UpdateContract(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract)">
+            <summary>
+            Обновляет контракт
+            </summary>
+            <param name="contract">Данные контракта</param>
+            <returns>Конракт</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ContractsRestClient.GetPriceRowTypes">
+            <summary>
+            возвращает все доступные типы формул
+            </summary>
+            <returns>Типы формул</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportFormatExtensions.GetMimeType(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportFormat)">
+            <summary>
+            Возвращает MIME-тип, соответствующий значению перечисления <paramref name="reportFormat"/>.
+            </summary>
+            <param name="reportFormat">Тип отчета</param>
+            <returns>MIME-тип</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportFormatExtensions.GetFormat(System.String)">
+            <summary>
+            Возвращает формат отчета по его  MIME-типу
+            </summary>
+            <param name="mimeType">MIME-тип</param>
+            <returns>Тип отчета</returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Serialization.IObjectDeserializer">
+            <summary>
+            Интерфейс настраиваемого десереализатора
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer">
+            <summary>
+            Десериализатор объектов из строки параметров в стиле MVC.
+            
+            Поддерживает нотацию MVC, но совместим не полностью: 
+            1. Работает только со свойствами.
+            2. Несколько более либерален к ошибкам ввода
+            3. Может что-то еще.
+            
+            Десериализаторы-парсеры конкретных типов нужны в том случае, когда
+            такие объекты не должны быть разобраны по свойствам (как например String).
+            Если попадается класс, который сам умеет десериализоваться из строки,
+            то перед десериализацией нужно вызвать RegisterDeserializer().
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.RegisterDeserializer(System.Type,TicketMan.Platform.Api.Shared.Serialization.IObjectDeserializer)">
+            <summary>
+            Регистрация специального десериализатора
+            </summary>
+            <param name="type">Тип, для которого действет десериализатор</param>
+            <param name="deserializer">Объект десериализатора</param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.RegisterDeserializer(System.Type,System.Func{System.String,System.Type,System.Object})">
+            <summary>
+            Регистрация специального десериализатора
+            </summary>
+            <param name="type">Тип, для которого действет десериализатор</param>
+            <param name="deserializerFunc">Функция десериализации</param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.UnregisterDeserializer(System.Type)">
+            <summary>
+            Убираем ранее проставленный десериализатор для тип (сбрасываем на дефлотный) 
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.GetDeserializer(System.Type)">
+            <summary>
+            Находит наиболее подходящий десериалайзер для указанного типа.
+            null - если ничего не нашлось.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.BuildTree(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})">
+            <summary>
+            Построение дерева параметров
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.ParseParameteres(System.String)">
+            <summary>
+            Распрасивание параметров из строки
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.ParseParameter(System.String)">
+            <summary>
+            Распарсивание конкртерного параметра из строки
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.DefaultDeserializer">
+            <summary>
+            Десериализатор по умлочанию
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Serialization.MvcDeserializer.FunctionDeserializer">
+            <summary>
+            Функциональный сериалайзер
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.Requests.CreateOrganizationRequest">
+            <summary>
+            Класс запроса на создание организации
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.CreateOrganizationRequest.Organization">
+            <summary>
+            Создаваемая организация
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.CreateOrganizationRequest.Contracts">
+            <summary>
+            Контракты между создаваемой организацией и текущей
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.HotelsRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsRestClient.#ctor(System.String)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.HotelsRestClient"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsRestClient.#ctor(System.String,System.String,System.String)">
+            <summary>
+             Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.HotelsRestClient"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsRestClient.GetHotels(TicketMan.Platform.Api.Shared.Protocol.Requests.HotelSearchRequest)">
+            <summary>
+             Поиск отелей
+            </summary>
+            <param name="parameters">параметры поиска</param>
+            <returns>возвращает результат поиска в виде tourML документа</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsRestClient.GetCancellationPolicy(TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest)">
+            <summary>
+            Получение правил правил отмены заказа
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.HotelsRestClient.CreateOrder(TicketMan.Platform.Protocol.ObjectModel.TourMLDocument)">
+            <summary>
+             Бронирование отеля
+            </summary>
+            <param name="reservationTourMLDocument">TourML документ с заявкой</param>
+            <returns>возвращает tourML с заполненным <see cref="T:TicketMan.Platform.Protocol.ObjectModel.OrdersPayloadElement"/></returns>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorType.Unknow">
+            <summary>
+            Неизвестный тип ошибки
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorType.ArgumentException">
+            <summary>
+            Ошибка передачи аргументов
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorType.LogicalException">
+            <summary>
+            Логическая ошибка выполнения
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorType.SystemException">
+            <summary>
+            Системная ошибка
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorType.AuthorizedException">
+            <summary>
+            Ошибка прав доступа
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.CancellationPolicyExtension">
+            <summary>
+            Представляет расширение для определения правил отмены заявки.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.Requests.Tours.SearchResultsSort">
+            <summary>Сортировка результатов поиска</summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.AccountingDataExt">
+            <summary>
+            AccountingDataExtended — предварительный класс для обработки данных для 1С
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.AccountingDataExt.GetContragentsFromOrders">
+            <summary>
+            Возвращает все id организаций, упомянутых в заявках
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.AccountingDataExt.SetBankAccounts">
+            <summary>
+            Проставляет коды р/с, вытаскивая их из Essentials
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.AccountingDataExt.SetDealsForOrders">
+            <summary>
+            Заполняет заявку сделками. Сделки и заявки получены разными запросами,
+            здесь они воссоединяются благодаря предусмотрительно сохраненным id
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.AccountingDataExt.GetOrderUniqueNumbers">
+            <summary>
+            Все заявки из оплат
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Report.Name">
+            <summary>
+            Название отчета (имя файла)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Report.Format">
+            <summary>
+            Формат отчета
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Report.MimeType">
+            <summary>
+            Mime-тип отчета
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Report.Content">
+            <summary>
+            Содержимое файла отчета
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentType">
+            <summary>
+            Перечисление, определяющее тип платежа.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentType.Cash">
+            <summary>
+            Наличные
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentType.CreditCard">
+            <summary>
+            Кредитной картой
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ServerSystemInfo">
+            <summary>
+            Сведения о сервере
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ServerSystemInfo.FullProductName">
+            <summary>
+            Полное название продукта
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ServerSystemInfo.Version">
+            <summary>
+            Версия
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ServerSystemInfo.BuildDate">
+            <summary>
+            Дата сборки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Systems.ServerSystemInfo.ConnectorsInfo">
+            <summary>
+            Сведения о подключенных коннекторах
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo">
+            <summary>
+            Предстяаляет общую ифнформацию о платежном извещении
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.OrderUniqueNumber">
+            <summary>
+            Возвращает или устанавливает номер заявки, которая оплачивается
+            текущим платежом.
+            </summary>
+            <remarks>
+            См. <see cref="P:TicketMan.Platform.Protocol.ObjectModel.Orders.Order.UniqueNumber"/>.
+            </remarks>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.Payer">
+            <summary>
+            Возвращает или устанавливает идентификатор контрагента-плательщика.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.Beneficiar">
+            <summary>
+            Возвращает или устанавливает идентификатор контрагента-получателя платежа.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.PaymentSystem">
+            <summary>
+            Возвращает или устанавливает платежную систему.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.Type">
+            <summary>
+            Возвращает или устанавливает тип платежа.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.UniqueNumber">
+            <summary>
+            Возвращает или устанавливает уникальный номер платежа в пределах TicketMan Platform.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.PaymentSystemUniqueNumber">
+            <summary>
+            Возвращает или устанавливает уникальный номер платежа в пределах платежной системы.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.PayerLegalStatus">
+            <summary>
+            Возвращает или устанавливает юридический статус плательщика.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.CurrencyCode">
+            <summary>
+            Возвращает или устанавливает идентификатор валюты, в которой производится платеж.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.Amount">
+            <summary>
+            Возвращает или устанавливает сумму платежа в валюте <see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.CurrencyCode"/>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.PaymentAmount">
+            <summary>
+            Возвращает или устанавливает сумму платежа в валюте <see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.CurrencyCode"/>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.RecivingAmount">
+            <summary>
+            Возвращает или устанавливает сумму, к зачислению на счет получателя<see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.CurrencyCode"/>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.CommissionAmount">
+            <summary>
+            Возвращает или устанавливает сумму комиссии платежной системы <see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.CurrencyCode"/>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.CreatedAt">
+            <summary>
+            Возвращает или устанавливает дату создания платежа.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Exceptions.LogicalApiException">
+            <summary>
+            Логическая ошибка на стороне сервера.
+            
+            В основном возникает из-за неверного запроса или неверной настройки сервера
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Exceptions.LogicalApiException.Code">
+            <summary>
+            Код ошибки
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ConnectorsConfigurationRestClient.GetConnectorsConfiguration(System.String,System.String)">
+            <summary>
+             Возвращает список настроек коннектора заданного типа услуги для организации
+            </summary>
+            <param name="organizationCode">Код организации</param>
+            <param name="serviceType">Тип услуги, значения настроек коннектора которой запрашивается.</param>
+            <returns>Список сайтов</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ConnectorsConfigurationRestClient.SetConnectorsConfiguration(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorsConfiguration)">
+            <summary>
+            Сохраняет список настроек коннектора заданного типа услуги для организации
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.RestRequestExtensions.With(RestSharp.RestRequest,System.Object)">
+            <summary>
+            Добавляет к запросу <paramref name="restRequest"/> параметры из объекта <paramref name="anonymousValue"/> (обычно
+            это анонимный тип). В качестве имен параметров используются имена свойств, в качестве же значений параметров -- значения свойств.
+            </summary>
+            <param name="restRequest"></param>
+            <param name="anonymousValue"></param>
+            <returns></returns>
+            <example>
+            <code>request.With(new { adults = 3, children = 1, item = new Item(/* ID */ 1, /* FullName */ "whatever" });</code>
+            В итоге получится строка вида <c>adults=3&amp;children=1&amp;item.id=1&amp;item.fullName=whatever</c>
+            </example>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.RestRequestExtensions.WithIndexed(RestSharp.RestRequest,System.Object)">
+            <summary>
+            Добавляет к запросу <paramref name="restRequest"/> индексированные параметры из объекта <paramref name="anonymousValue"/> (обычно
+            это анонимный тип). В качестве префиксов имен параметров используются имена свойств, в качестве же значений параметров -- значения свойств.
+            </summary>
+            <param name="restRequest"></param>
+            <param name="anonymousValue"></param>
+            <returns></returns>
+            <remarks>
+            </remarks>
+            <example>
+            <code>request.WithIndexed(new { items = new[] { new Item(/* ID */ 1, /* FullName */ "one"), new Item(2, "two") } });</code>
+            В итоге получится строка вида <c>items[0].id=1&amp;items[1].fullName=one&amp;items[1].id=2&amp;items[1].fullName=two</c>
+            </example>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentsRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.PaymentsRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentsRestClient.CreatePayment(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment)">
+            <summary>
+            Создает платеж
+            </summary>
+            <param name="payment">Платеж</param>
+            <returns>Платеж</returns>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.MoneyAmount.Value">
+            <summary>
+            Сумма
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.MoneyAmount.CurrencyCode">
+            <summary>
+            Код валюты
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.CancellationRule.CountryID">
+            <summary>
+            Возвращает или устанавливает идентификатор страны, к который относятся данные правила. Может отсутствовать.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Organization.Essentials">
+            <summary>
+            Реквизиты организации
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.ToursRestClient.#ctor(System.String)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.ToursReferencesRestClient"/>.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Exceptions.ErrorHeader">
+            <summary>
+            Класс для работы с заголовком описания ошибки
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode">
+            <summary>
+            Список кодов ошибок, генерируемых платформой
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrderNotFound">
+            <summary>
+            Невозможности найти в сиситеме заявку с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ReportTemplateNotFound">
+            <summary>
+            Невозможности найти в сиситеме шаблон отчета с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ReportTypeNotFound">
+            <summary>
+            Невозможности найти в сиситеме тип отчета отчета с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrganizationNotFound">
+            <summary>
+            Невозможности найти в сиситеме организацию с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.PartyNoFound">
+            <summary>
+            Невозможности найти в сиситеме сторону сделки с указанным ID
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.SiteNotFound">
+            <summary>
+            Невозможности найти в сиситеме сайт с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.SiteAlreadyExists">
+            <summary>
+            Сайт с заданным кодом уже существует.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.UserNotFound">
+            <summary>
+            Невозможности найти в сиситеме пользователя с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ContractNotFound">
+            <summary>
+            Невозможности найти в сиситеме контракт с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.MoneyTransferContractNotFound">
+            <summary>
+            Невозможности найти в сиситеме контракты на перевод денег
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.RoleNotFound">
+            <summary>
+            Невозможности найти в сиситеме роль с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.PaymentSystemNotFound">
+            <summary>
+            Невозможности найти в сиситеме платежную систему с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ServiceTypeNotFound">
+            <summary>
+            Невозможности найти в сиситеме тип услуги с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ConnectorVariableNotFound">
+            <summary>
+            Невозможно найти переменную для коннектора
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.DealsWithEndsellerNotFound">
+            <summary>
+            Невозможности найти в сиситеме сделки с конечным продацом
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ContractChainNotFound">
+            <summary>
+            Невозможности найти в сиситеме цепочку контрактов между указанными контрагентами
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrderDocumentNotFound">
+            <summary>
+            Невозможности найти документ по заявке
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ConnectorVariableValueNotFound">
+            <summary>
+            Невозможности найти заданное значение переменной.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ConnectorConfigurationNotFound">
+            <summary>
+            Невозможности найти заданное значение переменной.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.VendorInLegalPartyChainNotFound">
+            <summary>
+            Невозможности определить вендора на основе переданной заявки
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.VendorNotFound">
+            <summary>
+            Невозможности определить вендора на основе переданной заявки
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.DealNotFound">
+            <summary>
+            Невозможности определить сделку
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.BankAccountWithCodeNotFound">
+            <summary>
+            Невозможности определить банковский счет.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.PriceRowTypeNotFound">
+            <summary>
+            Тип строки цены не найден
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.UserAlreadyExists">
+            <summary>
+            Невозможности найти в сиситеме пользователя с указанным номером
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ReferenceEditingNotSupported">
+            <summary>
+            Коннектор не поддерживает редактирование справочников
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrderReferenceCurrencyNotFound">
+            <summary>
+            В заявке нет справочника валют с указанным кодом
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrderCurrencyNotFound">
+            <summary>
+            В заявке нет цены в указанной валюте
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.SaveingOrganizationWithoutContracts">
+            <summary>
+            Сохранение организаций без контректов не разрешено 
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.General">
+            <summary>
+            Ощая ошибка, смотри описание
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ArgumentIsNotDefined">
+            <summary>
+            Аргумент не определен должным образом
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.RecoveryUrlBadFormat">
+            <summary>
+            Неверный формат ссылки для востановления пароля
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.PaymentNotAllowedForOrder">
+            <summary>
+            Для заявки в данном статусе оплаты не разрешены
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrganizationAlreadyExists">
+            <summary>
+            Организация уже существует
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.SalesContractCanBeModifiedFromSalersOnly">
+            <summary>
+            Ограничение на создание продажных контрактов
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.AttractClientsContractCanBeModifiedFromBuyersOnly">
+            <summary>
+            Ограничение на создание продажных контрактов
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.ExternalIdIsNotUniqueForUser">
+            <summary>
+            Для внешнего идентфикатора есть более одного пользователя.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrderDoesNotHaveAnyService">
+            <summary>
+            Заявка не имеет ни одной услуги.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.PageSizeTooBig">
+            <summary>
+            Размер страницы слишком велик для отображения.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.PartyHasWrongType">
+            <summary>
+            Сторона сделки имеет неверный тип
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.OrderDocumentIsNull">
+            <summary>
+            Документ заявки не создан
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Exceptions.ErrorCode.CollectionConnectorVariableValueMustHaveName">
+            <summary>
+            Значение переменной с типа коллекции должна иметь имя 
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.Name">
+            <summary>
+            Название переменной
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.CollectionItemName">
+            <summary>
+            Название значение в коллекции
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.ServiceType">
+            <summary>
+            Тип услуги
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.OrganizationCode">
+            <summary>
+            Код организации, которой пренадлежит значение
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.SiteSlug">
+            <summary>
+            Идендификатор сайта, которому пренадлежит значение
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.ContractUniqueNumber">
+            <summary>
+            Номер контракта, которому пренадлежит значение
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.Description">
+            <summary>
+            Описание переменной
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ConnectorConfigurationVariable.Value">
+            <summary>
+            Значение переменной
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorPackageExtension.OfferName">
+            <summary>
+            Возвращает или устанавливает название спецпредложения оператора.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PartyInfo.PartyId">
+            <summary>
+            Код контрагента
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PartyInfo.Name">
+            <summary>
+            Название контрагента
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PartyInfo.OrganizationCode">
+            <summary>
+            Код организации
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PartyInfo.UserLogin">
+            <summary>
+            Логин пользователя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.PaymentAmount">
+            <summary>
+            сумма оплаты (бывший Amount)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.ReceivingAmount">
+            <summary>
+            сумма для зачисления на счет получателя.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.CommissionAmount">
+            <summary>
+            реальный размер комиссии платежного агента.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.CurrencyCode">
+            <summary>
+            валюта оплаты
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.Recipient">
+            <summary>
+            получатель платежа
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.Transfer">
+            <summary>
+            плательщик
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.CreatedAt">
+            <summary>
+            дата создания платежа
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.ApproveCode">
+            <summary>
+            код подтверждения платежной системы
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PaymentReport.PaymentType">
+            <summary>
+            тип оплаты (Cache, CreditCard)
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.RoleExtensions.HasPermission(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Role,System.String)">
+            <summary>
+            Проверяет, есть ли у роли <paramref name="role"/> разрешение <paramref name="permissionCode"/>.
+            </summary>
+            <param name="role"></param>
+            <param name="permissionCode">Код разрешения (регистр не играет роли)</param>
+            <returns></returns>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Exceptions.ArgumentApiException">
+            <summary>
+            Логическая ошибка на стороне сервера.
+            
+            В основном возникает из-за неверного запроса или неверной настройки сервера
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Exceptions.ArgumentApiException.ArgumentName">
+            <summary>
+            Код ошибки
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.PriceRowType">
+            <summary>
+            Тип значения которое определяет формула
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.PriceRowType.Code">
+            <summary>
+            Код типа
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.PriceRowType.Name">
+            <summary>
+            Название
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.PriceRowType.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PriceRow.Number">
+            <summary>
+            последовательный номер строки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PriceRow.Description">
+            <summary>
+            описание строки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PriceRow.Value">
+            <summary>
+            слагаемое суммы сделки в валюте сделки
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PriceRow.PriceRowTypeCode">
+            <summary>
+            Код типа строки в сделке
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.OrderDocumentData.Content">
+            <summary>
+            Массив байт с содержимым файла
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.OrderDocumentData.ContentType">
+            <summary>
+            Тип контента
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.OrderDocumentData.FileName">
+            <summary>
+            Название файла
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.OrderDocumentData.FullFileName">
+            <summary>
+            Полный путь к файлу
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Permission.Code">
+            <summary>
+            Код разрешение
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Permission.Name">
+            <summary>
+            Навание
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.Permission.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.OrderExt">
+            <summary>
+            Класс для предварительной обработки заявки для 1С
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.OrderExt.UniqueNumber">
+            <summary>
+            уникальный номер заявки в системе
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.OrderExt.Status">
+            <summary>
+            статус заявки в системе. Может принимать конечный набор значений.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.OrderExt.CreatedAt">
+            <summary>
+            дата создания 
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.OrderExt.Description">
+            <summary>
+            краткое описание заявки
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler">
+            <summary>
+            Обработчик конфигурационной секции <c>TicketMan.platform</c>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler.Api">
+            <summary>
+            Представляет секцию <c>&lt;api></c>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler.Settings">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.UserExtensions.HasPermission(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User,System.String)">
+            <summary>
+            Проверяет, есть ли у пользователя <paramref name="user"/> разрешение <paramref name="permissionCode"/>.
+            </summary>
+            <param name="user"></param>
+            <param name="permissionCode">Код разрешения (регистр не играет роли)</param>
+            <returns></returns>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.Id">
+            <summary>
+            Глобальный идентификатор пользователя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.EmailAddress">
+            <summary>
+            Адрес электронной почты (Login)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.SiteSlug">
+            <summary>
+            Сайт, которому пренадлежит пользователь
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.FirstName">
+            <summary>
+            Имя пользователя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.LastName">
+            <summary>
+            Фамилия пользователя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.OrganizationCode">
+            <summary>
+            Код организации, к которой пренадлежит пользоватль
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.ExternalId">
+            <summary>
+            Внешний идентфикатор пользователя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.PhoneNumbers">
+            <summary>
+            Номера телефонов
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.Type">
+            <summary>
+            Тип пользовтеля
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.Permissions">
+            <summary>
+            Список разрешений данного пользователя
+            </summary>
+            <remarks>
+            См. <see cref="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.StandardPermissions"/>.
+            </remarks>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.User.Roles">
+            <summary>
+            Список ролей данного пользователя
+            </summary>
+            <remarks>
+            См. <see cref="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Profile.StandardPermissions"/>.
+            </remarks>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReport">
+            <summary>
+            Представляет извещение о внесении платежа по заявке с уникальным номером <see cref="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReportInfo.OrderUniqueNumber"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReport.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment"/>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReport.#ctor(System.String,System.Decimal,System.String)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.Payment"/>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReport.Comment">
+            <summary>
+            Возвращает или устанавливает комментарий к платежу.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.FlightsRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.FlightsRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.FlightsRestClient.#ctor(System.String)">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.ToursReferencesRestClient"/>.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.HotelCode">
+            <summary>
+            Код отеля
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.CityCode">
+            <summary>
+            Код города располодения отеля
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.Supplier">
+            <summary>
+            Система бронирвоания
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.CheckInDate">
+            <summary>
+            Дата въезда
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.CheckOutDate">
+            <summary>
+            Дата выезда
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.Rooms">
+            <summary>
+            Список комнат
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.PackegeId">
+            <summary>
+            ID пакета из результата поиска
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.Room.NumberOfCots">
+            <summary>
+            Число детских кроваток в комнате
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.Requests.HotelCancelConditionReferencesRequest.Room.BookingToken">
+            <summary>
+            Идентфикатор бронирования
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.PartyOrganizationIds">
+            <summary>
+             Класс содержит два списка: id организаций и id party
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.BankAccount.BankAccountCode">
+            <summary>
+            уникальный в пределах контрагента код
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.BankAccount.BankName">
+            <summary>
+            Название банка
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.BankAccount.BankAddress">
+            <summary>
+            Адрес банка
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.BankAccount.Bik">
+            <summary>
+            БИК
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.BankAccount.AccountNumber">
+            <summary>
+            Номер расчетного счета
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.BankAccount.CorrespondingAccountNumber">
+            <summary>
+            Номер корресподентского счета
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportType">
+            <summary>
+            Тип отчетов
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportType.Code">
+            <summary>
+            Идентификатор типа отчета
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportType.Name">
+            <summary>
+            Название отчета
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.ReportType.Description">
+            <summary>
+            Описание отчета
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Exceptions.SystemApiException">
+            <summary>
+            Системная ошибка сервера.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorCredentialsExtension">
+            <summary>
+            Расширение, инкапсулирующее учетные данные для доступа к сервисам бронирования вендоров.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorCredentialsExtension.Login">
+            <summary>
+            Возвращает или устанавливает логин.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorCredentialsExtension.Password">
+            <summary>
+            Возвращает или устанавливает пароль.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.TourMLDocumentExtensions.VendorCredentialsExtension.AccountID">
+            <summary>
+            Возвращает или устанавливает идентификатор учетной записи в базе данных вендора.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Order">
+            <summary>
+            Заявка для 1С
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Order.UniqueNumber">
+            <summary>
+            уникальный номер заявки в системе
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Order.Status">
+            <summary>
+            статус заявки в системе. Может принимать конечный набор значений.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Order.CreatedAt">
+            <summary>
+            дата создания 
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Order.Description">
+            <summary>
+            краткое описание заявки
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SystemRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.PaymentsRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SystemRestClient.GetServerSystemInfo">
+            <summary>
+            Возвращает инофрмацию о версии сервера.
+            </summary>
+            <returns>Информация о версии сервера</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.SystemRestClient.GetServerTime">
+            <summary>
+            Возвращает текущее время сервера в UTC.
+            </summary>
+            <returns>Время на сервере</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentReportsRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.PaymentsRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentReportsRestClient.GetPaymentReportInfo(System.String,TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PayerLegalStatus,System.Collections.Generic.List{System.String})">
+            <summary>
+            Возвращает информацию, необходимую для проведения оплаты
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+            <param name="payerLegalStatus">Статус плательщика, от лица которого запрашивается информация</param>
+            <param name="paymentSystemCodes">Список платежных систем, для которых будут осуществлятся платежи</param>
+            <returns>Информация для оплаты заявки</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentReportsRestClient.CreatePaymentReport(TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PaymentReport)">
+            <summary>
+            Создает отчет об оплате в бэкофисе.
+            </summary>
+            <param name="paymentReport">Данные оплаты</param>
+            <returns>PaymentReport.UniqueNumber</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentReportsRestClient.GetPaymentReports(System.String)">
+            <summary>
+            Возвращает все поступившие извещения о платеже по данной заявке
+            </summary>
+            <param name="orderUniqueNumber">Номер заявки</param>
+            <returns>Список платежных извещений</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentReportsRestClient.GetPaymentReport(System.String)">
+            <summary>
+            Возвращает извещение о платеже 
+            </summary>
+            <param name="paymentReportUniqueNumber">Номер извещения о платеже</param>
+            <returns>извещение о платеже</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentReportsRestClient.GetPaymentReportsInfo(TicketMan.Platform.Api.Shared.Protocol.Requests.PaymentReportsRequest)">
+            <summary>
+            Возвращает все платежи для данной организации
+            </summary>
+            <returns>>Список платежных извещений</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.PaymentReportsRestClient.DeletePaymentReport(System.String,System.String)">
+            <summary>
+            Удаляет информацию о платежном извещении
+            ToDo: на сервере не реализовано.
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+            <param name="paymentReportUniqueNumber">Номер платежного извещения</param>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.XTicketManHeaderAuthenticator">
+            <summary>
+            Реализация <see cref="T:RestSharp.IAuthenticator"/>, передающая ключ доступа к API в HTTP-заголовке <c>X-TicketMan-Auth</c> и
+            метку имперсонации в HTTP-заголовке <c>X-TicketMan-Impersonate</c>
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.XTicketManHeaderAuthenticator.#ctor(TicketMan.Platform.Api.Shared.AuthToken,System.Func{TicketMan.Platform.Api.Shared.ImpersonationToken})">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.XTicketManHeaderAuthenticator"/>.
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PayerLegalStatus">
+            <summary>
+            Перечисление, определяющее юридический статус плательщика.
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PayerLegalStatus.LegalParty">
+            <summary>
+            Юридическое лицо
+            </summary>
+        </member>
+        <member name="F:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Payments.PayerLegalStatus.NaturalParty">
+            <summary>
+            Физическое лицо
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site.SiteSlug">
+            <summary>
+            Идентфикатор сайта
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site.ApiKey">
+            <summary>
+            Ключ доступа для сайта
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site.OrganizationCode">
+            <summary>
+            Код организации, которой пренадледит сайт
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site.Name">
+            <summary>
+            Название сайта (домен)
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site.IsActive">
+            <summary>
+            Флаг активности сайта в данный момент
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Site.IsCreatingUserMessageRequired">
+            <summary>
+            Флаг отвечающий за требвание отсылки сообщения при создании нового пользователя.
+            null - значение по умолчанию в системе.
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.UniqueNumber">
+            <summary>
+            Уникальный номер контракта
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.SellerPartyId">
+            <summary>
+            Идентфикатор контрагента продавца
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.BuyerPartyId">
+            <summary>
+            Идентификатор контрагента покупателя
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.ServiceType">
+            <summary>
+            Тип услуги
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.ContractType">
+            <summary>
+            Тип контракта
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.ExternalNumber">
+            <summary>
+            Внешний номер контракта
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.IsActive">
+            <summary>
+            Активность котракта в данный момент
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.LastUpdate">
+            <summary>
+            Время последнего обновления контрата
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.SellerBankAccountCode">
+            <summary>
+            Код банковского счета продавца по которому происходят расчеты по данному контракту
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.CurrencyCode">
+            <summary>
+            Код валюты, в которой создается контракт
+            </summary>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.Contract.Formulas">
+            <summary>
+            Формулы контракта
+            </summary>
+        </member>
+        <member name="T:TicketMan.Platform.Api.Shared.OrdersRestClient">
+            <summary>
+            Клиент к <c>{siteSlug}/orders</c>.
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.#ctor">
+            <summary>
+            Создает новый экземпляр класса <see cref="T:TicketMan.Platform.Api.Shared.OrdersRestClient"/> и инициализирует его
+            настройками из конфигурационного файла приложения.
+            </summary>
+            <remarks>
+            <seealso cref="T:TicketMan.Platform.Api.Shared.Configuration.TicketManPlatformSectionHandler"/>
+            </remarks>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="siteSlug"></param>
+            <param name="apiKey"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.#ctor(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+            <param name="siteSlug"></param>
+            <param name="apiKey"></param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.GetOrdersInfo(TicketMan.Platform.Protocol.ObjectModel.Orders.OrdersInfoRequest)">
+            <summary>
+            Возвращает краткую выжимку из заявок доступных имперсонированному пользователю.
+            </summary>
+            <param name="ordersInfoRequest">Объект задающий параметры фильтрации запрашиваемых заявок</param>
+            <returns></returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.GetOrder(System.String)">
+            <summary>
+            Возвращает полную информацию о заявке по ее номеру 
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+            <returns>OrdersPayloadElement</returns>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.UpdateOrderDeals(System.String)">
+            <summary>
+            Обновляет сделки по заявке 
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.UpdateOrder(System.String,TicketMan.Platform.Protocol.ObjectModel.Orders.OrderRefreshBehavior)">
+            <summary>
+            Возвращает полную информацию о заявке по ее номеру 
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+            <param name="orderRefreshBehavior">Режим обновления заявки</param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.CancelOrder(System.String)">
+            <summary>
+            Отменяет заявку в системе вендора
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.OrdersRestClient.IssueOrder(System.String)">
+            <summary>
+            Выписывает заявку
+            </summary>
+            <param name="uniqueNumber">Номер заявки</param>
+        </member>
+        <member name="P:TicketMan.Platform.Api.Shared.Protocol.ObjectModel.OneC.Essentials.DefaultBankAccountCode">
+            <summary>
+            используется если не переопределен в другом месте
+            </summary>
+        </member>
+        <member name="M:TicketMan.Platform.Api.Shared.AuthToken.Validate(System.String)">
+            <summary>
+            Проверка полученного от клиента ImpersonationToken
+            </summary>
+        </member>
+    </members>
+</doc>
