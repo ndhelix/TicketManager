@@ -1136,7 +1136,7 @@
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            //this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            //this.Icon = (System.Drawing.Icon)(global::TicketMan.Backoffice.Desktop.Properties.Resources.plus_icon);
             this.MinimumSize = new System.Drawing.Size(800, 300);
             this.Name = "FrmMain";
             this.Text = "TicketMan Backoffice Desktop";

@@ -29,9 +29,9 @@ namespace TicketMan.Backoffice.Desktop.Decorators
         [DisplayName("Автоматическая выписка")]
         public string AutoIssues { get
         {
-            if (_component.AutoIssues != null)
-                return string.Join("; ", _component.AutoIssues.ToArray());
-            else
+            //if (_component.AutoIssues != null)
+              //  return string.Join("; ", _component.AutoIssues.ToArray());
+            //else
             {
                 return null;
             }

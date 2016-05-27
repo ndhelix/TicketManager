@@ -106,7 +106,7 @@ namespace TicketMan.Backoffice.Desktop
             var restClient = (PaymentReportsRestClient)DataProcessor.GetRestClient("PaymentReportsRestClient");
             try
             {
-                restClient.ReassignPaymentReport(_paymentReportUniqueNumber, txtNewOrderNumber.Text.Trim());
+                //restClient.ReassignPaymentReport(_paymentReportUniqueNumber, txtNewOrderNumber.Text.Trim());
                 MessageBox.Show("Отчет об оплате успешно перенесен.");
             }
             catch (Exception ex)

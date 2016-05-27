@@ -101,9 +101,6 @@
     <EmbeddedResource Include="UI\frmUser.resx">
       <DependentUpon>frmUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmPayment.resx">
-      <DependentUpon>frmPayment.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\dlg\dlgAgentReportRequest.resx">
       <DependentUpon>dlgAgentReportRequest.cs</DependentUpon>
     </EmbeddedResource>
@@ -126,14 +123,6 @@
       <DependentUpon>frmOrganization.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <Reference Include="TicketMan.Platform.Api.Shared, Version=2.0.93.1995, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\externals\Client_API\bin\TicketMan.Platform.Api.Shared.dll</HintPath>
-    </Reference>
-    <Reference Include="TicketMan.Platform.Protocol, Version=2.0.93.1995, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\externals\Client_API\bin\TicketMan.Platform.Protocol.dll</HintPath>
-    </Reference>
     <Reference Include="CreativeGroup.Messager">
       <HintPath>..\..\libs\CreativeGroup.Messager.dll</HintPath>
     </Reference>
@@ -229,6 +218,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="TicketMan.Platform.Api.Shared">
+      <HintPath>..\..\libs\TicketMan.Platform.Api.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="TicketMan.Platform.Protocol">
+      <HintPath>..\..\libs\TicketMan.Platform.Protocol.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
@@ -284,12 +279,6 @@
     </Compile>
     <Compile Include="UI\frmUser.Designer.cs">
       <DependentUpon>frmUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\frmPayment.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\frmPayment.Designer.cs">
-      <DependentUpon>frmPayment.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\dlg\dlgAgentReportRequest.cs">
       <SubType>Form</SubType>

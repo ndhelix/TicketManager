@@ -80,7 +80,7 @@ namespace TicketMan.Backoffice.Desktop
             var o = gridViewOrganizations.GetRow(gridViewOrganizations.FocusedRowHandle);
             if (!(o is OrganizationInfoDecorator)) return;
             var od = o as OrganizationInfoDecorator;
-            new FrmPayment("", od.PartyId, od.FullName).Show();
+            //new FrmPayment("", od.PartyId, od.FullName).Show();
         }
 
         private void CreateSiteFromOrg()
@@ -104,7 +104,7 @@ namespace TicketMan.Backoffice.Desktop
 			var o = gridViewUsers.GetRow(gridViewUsers.FocusedRowHandle);
 			if (!(o is UserDecorator)) return;
 			var d = o as UserDecorator;
-			new FrmPayment("", d.PartyId, d.FirstName + " " + d.LastName).Show();
+			//new FrmPayment("", d.PartyId, d.FirstName + " " + d.LastName).Show();
 		}
 
 		private void UserShow()
@@ -136,7 +136,7 @@ namespace TicketMan.Backoffice.Desktop
             var o = gridViewPayments.GetRow(gridViewPayments.FocusedRowHandle);
             if (!(o is PaymentDecorator)) return;
             var od = o as PaymentDecorator;
-            new FrmPayment(od.UniqueNumber).Show();
+            //new FrmPayment(od.UniqueNumber).Show();
         }
 
         private void SiteShow()

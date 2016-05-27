@@ -133,25 +133,28 @@ namespace TicketMan.Backoffice.Desktop
 		public static List<PaymentDecorator> GetPayments()
 		{
 			var restClient = (PaymentsRestClient)GetRestClient("PaymentsRestClient");
-			var payments = restClient.GetPayments();
-			if (payments == null) return null;
-			return (Utils.IList2LIst(payments)).ConvertAll<PaymentDecorator>(x => new PaymentDecorator(x));
+            return null;
+			//var payments = restClient.GetPayments();
+			//if (payments == null) return null;
+			//return (Utils.IList2LIst(payments)).ConvertAll<PaymentDecorator>(x => new PaymentDecorator(x));
 		}
 
         public static List<AgencyUserDecorator> GetAgenciesUsers()
 		{
             var restClient = (UserRestClient)GetRestClient("UserRestClient");
-            var users = restClient.GetBuyersUsers();
-            if (users == null) return null;
-            return (Utils.IList2LIst(users)).ConvertAll<AgencyUserDecorator>(x => new AgencyUserDecorator(x));
+            return null;
+            //var users = restClient.GetBuyersUsers();
+            //if (users == null) return null;
+            //return (Utils.IList2LIst(users)).ConvertAll<AgencyUserDecorator>(x => new AgencyUserDecorator(x));
 		}
 
         public static List<SiteDecorator> GetSites()
         {
             var restClient = (SiteRestClient)GetRestClient("SiteRestClient");
-            var sites = restClient.GetBuyerSites();
-            if (sites == null) return null;
-            return (Utils.IList2LIst(sites)).ConvertAll<SiteDecorator>(x => new SiteDecorator(x));
+            return null;
+            //var sites = restClient.GetBuyerSites();
+           // if (sites == null) return null;
+            //return (Utils.IList2LIst(sites)).ConvertAll<SiteDecorator>(x => new SiteDecorator(x));
         }
 
 		public static List<ContractDecorator> GetContracts(string organizationcode)

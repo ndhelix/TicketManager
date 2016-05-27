@@ -65,14 +65,14 @@ namespace TicketMan.Backoffice.Desktop
       if (_paymentReportsRequest == null)
         _paymentReportsRequest = new PaymentReportsRequest();
 
-	  _paymentReportsRequest.OrderUniqueNumber = null;
+	  //_paymentReportsRequest.OrderUniqueNumber = null;
 
 	  if (txtOrderNumberFilter2.Text != "")
 	  {
 		  _paymentReportsRequest.CreatedOnFrom = null;
 		  _paymentReportsRequest.CreatedOnTo = null;
 
-		  _paymentReportsRequest.OrderUniqueNumber = txtOrderNumberFilter2.Text;
+		//  _paymentReportsRequest.OrderUniqueNumber = txtOrderNumberFilter2.Text;
 		  return _paymentReportsRequest;
 	  }
       _paymentReportsRequest.CreatedOnFrom = dateRangeControl_PaymentReports.From;

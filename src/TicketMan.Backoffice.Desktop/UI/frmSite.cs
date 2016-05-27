@@ -97,12 +97,7 @@ namespace TicketMan.Backoffice.Desktop
 			txtOrganizationCode.Text = _site.OrganizationCode;
 		    chActive.Checked = _site.IsActive;
             chSenMessageRequired.Checked = _site.IsCreatingUserMessageRequired ?? false;
-            if (_site.AutoIssues != null)
-            {
-                chAutoIssueFlight.Checked = _site.AutoIssues.Contains("flights");
-                chAutoIssueHotel.Checked = _site.AutoIssues.Contains("hotels");
-                chAutoIssueTour.Checked = _site.AutoIssues.Contains("tours");
-            }
+
 		}
 
 		Site GetUpdatedSite()
@@ -115,10 +110,7 @@ namespace TicketMan.Backoffice.Desktop
             newsite.IsActive = chActive.Checked;
             newsite.IsCreatingUserMessageRequired = chSenMessageRequired.Checked;
 
-            newsite.AutoIssues = new List<string>();
-            if (chAutoIssueFlight.Checked) newsite.AutoIssues.Add("flights");
-            if (chAutoIssueHotel.Checked) newsite.AutoIssues.Add("hotels");
-            if (chAutoIssueTour.Checked) newsite.AutoIssues.Add("tours");
+
 
 			return newsite;
 		}

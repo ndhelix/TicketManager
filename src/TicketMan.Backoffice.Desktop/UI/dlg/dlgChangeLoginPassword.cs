@@ -78,7 +78,7 @@ namespace TicketMan.Backoffice.Desktop.UI.dlg
                 return;
             }
             var restClient = (UserRestClient)DataProcessor.GetRestClient("UserRestClient");
-            restClient.UpdatePassword(_siteslug, txtLoginOld.Text, txtNewReg.Text);
+            //restClient.UpdatePassword(_siteslug, txtLoginOld.Text, txtNewReg.Text);
         }
 
 	    private void ChangeLogin()
@@ -89,7 +89,7 @@ namespace TicketMan.Backoffice.Desktop.UI.dlg
                 throw new Exception("Логин (email) некорректный.");
             }
             var restClient = (UserRestClient)DataProcessor.GetRestClient("UserRestClient");
-            restClient.ChangeLogin(_userid, txtNewReg.Text);
+            //restClient.ChangeLogin(_userid, txtNewReg.Text);
 		}
 
 		private void DlgChangeLoginPassword_Load(object sender, EventArgs e)

@@ -14,7 +14,7 @@ namespace TicketMan.Backoffice.Desktop.Decorators
 		public long Id { get { return _component.Id; } }
 
 		[DisplayName("Идентификатор контрагента")]
-		public long PartyId { get { return _component.PartyId; } }
+		public long PartyId { get { return 0; } }
 
 		[DisplayName("E-mail (логин)")]
 		public string EmailAddress { get { return _component.EmailAddress; } }
